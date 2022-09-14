@@ -6,6 +6,8 @@ Terraform based server install at Upcloud using guide outlined at https://upclou
 * [Setup Upcloud API Credentials](#setup-upcloud-api-credentials)
 * [Initialize New Terraform Project](#initialize-new-terraform-project)
 * [Planning Infrastructure With Terraform](#planning-infrastructure-with-terraform)
+  * [Variable Template Method](#variable-template-method)
+  * [Defining Output Variables](#defining-output-variables)
   * [Viewing User Data Progress](#viewing-user-data-progress)
 * [Using upctl Command Line Tool](#using-upctl-command-line-tool)
 * [Deleting Terraform Created Server](#deleting-terraform-created-server)
@@ -105,7 +107,7 @@ drwxr-xr-x 3 root root 4.0K Sep 14 09:07 ..
 touch server1.tf
 ```
 
-Using values from https://developers.upcloud.com/1.3/ and https://upcloud.com/resources/tutorials/reduce-downtime-terraform-redeployments
+Using values from https://developers.upcloud.com/1.3/ and https://upcloud.com/resources/tutorials/reduce-downtime-terraform-redeployments. Later you can create variables outlined at https://upcloud.com/resources/tutorials/terraform-variables.
 
 Using:
 
@@ -282,6 +284,185 @@ upcloud_server.server1 (remote-exec): Hello world!
 upcloud_server.server1: Creation complete after 52s [id=0006f04a-15e3-4f4d-83xxx-7cc592935xxx]
 
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+```
+
+## Variable Template Method
+
+Instead of hardcoding `server1.tf` settings, you can use variables outlined at https://upcloud.com/resources/tutorials/terraform-variables via a dedicated `variables.tf` file
+
+The `variables.tf` file
+
+```
+variable "private_key_path" {
+  type = string
+  default = "~/.ssh/rsa_private_key"
+}
+
+variable "public_key" {
+  type = string
+  default = "ssh-rsa XYZABC"
+}
+
+variable "zones" {
+  type = map
+  default = {
+    "amsterdam" = "nl-ams1"
+    "london"    = "uk-lon1"
+    "frankfurt" = "de-fra1"
+    "helsinki1" = "fi-hel1"
+    "helsinki2" = "fi-hel2"
+    "chicago"   = "us-chi1"
+    "sanjose"   = "us-sjo1"
+    "singapore" = "sg-sin1"
+    "sydney"    = "au-syd1"
+    "warsaw"    = "pl-waw1"
+    "madrid"    = "es-mad1"
+    "newyork"   = "us-nyc1"
+  }
+}
+
+variable "plans" {
+  type = map
+  default = {
+    "5USD"    = "1xCPU-1GB"
+    "10USD"   = "1xCPU-2GB"
+    "20USD"   = "2xCPU-4GB"
+    "40USD"   = "4xCPU-8GB"
+    "80USD"   = "6xCPU-16GB"
+    "160USD"  = "8xCPU-32GB"
+    "240USD"  = "12xCPU-48GB"
+    "320USD"  = "16xCPU-64GB"
+    "490USD"  = "20xCPU-96GB"
+    "640USD"  = "20xCPU-128GB"
+  }
+}
+
+variable "storage_sizes" {
+  type = map
+  default = {
+    "1xCPU-1GB"    = "25"
+    "1xCPU-2GB"    = "50"
+    "2xCPU-4GB"    = "80"
+    "4xCPU-8GB"    = "160"
+    "6xCPU-16GB"   = "320"
+    "8xCPU-32GB"   = "640"
+    "12xCPU-48GB"  = "960"
+    "16xCPU-64GB"  = "1280"
+    "20xCPU-96GB"  = "1920"
+    "20xCPU-128GB" = "2048"
+  }
+}
+variable "templates" {
+  type = map
+  default = {
+    "centos7"     = "01000000-0000-4000-8000-000050010300"
+    "almalinux8"  = "01000000-0000-4000-8000-000140010100"
+    "rockylinux8" = "01000000-0000-4000-8000-000150010100"
+  }
+}
+
+variable "set_password" {
+  type = bool
+  default = false
+}
+
+variable "users" {
+  type = list
+  default = ["root", "user1", "user2"]
+}
+
+variable "plan" {
+  type = string
+  default = "40USD"
+}
+
+variable "template" {
+  type = string
+  default = "centos7"
+}
+```
+
+The `server.tf` file
+
+```
+resource "upcloud_server" "server1" {
+  # System hostname
+  hostname = "terraform.example.com"
+
+  # Availability zone
+  zone = var.zones["newyork"]
+
+  # Number of CPUs and memory in GB
+  plan = var.plans[var.plan]
+
+  template {
+    # System storage device size
+    size = lookup(var.storage_sizes, var.plans[var.plan])
+
+    # Template UUID for CentOS 7
+    storage = var.templates[var.template]
+  }
+
+  # Network interfaces
+  network_interface {
+    type = "public"
+  }
+
+  network_interface {
+    type = "utility"
+  }
+
+  # Include at least one public SSH key
+  login {
+    user = var.users[0]
+    keys = [
+      var.public_key
+    ]
+    create_password = var.set_password
+    password_delivery = "email"
+  }
+
+  # Configuring connection details
+  connection {
+    # The server public IP address
+    host        = self.network_interface[0].ip_address
+    type        = "ssh"
+    user        = var.users[0]
+    private_key = file(var.private_key_path)
+  }
+
+  # Remotely executing a command on the server
+  provisioner "remote-exec" {
+    inline = [
+      "echo 'Hello world!'"
+    ]
+  }
+
+  user_data = <<EOF
+  export TERM=xterm-256color
+  yum -y update
+  curl -sL https://github.com/centminmod/scriptreplay/raw/master/script-record.sh -o /usr/local/bin/script-record
+  chmod +x /usr/local/bin/script-record
+  EOF
+}
+```
+
+## Defining Output Variables
+
+and create an `output.tf` file with your hostname `terraform.example.com`
+
+```
+output "public_ip" {
+  value = upcloud_server.terraform.example.com.network_interface[0].ip_address
+}
+
+output "utility_ip" {
+  value = upcloud_server.terraform.example.com.network_interface[1].ip_address
+}
+
+output "hostname" {
+  value = upcloud_server.terraform.example.com.hostname
+}
 ```
 
 ## Viewing User Data Progress
