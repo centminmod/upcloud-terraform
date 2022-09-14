@@ -33,7 +33,8 @@ Download upctl command line tool from https://github.com/UpCloudLtd/upcloud-cli/
 upctl_version=2.1.0
 curl -L -o upcloud-cli.tar.gz https://github.com/UpCloudLtd/upcloud-cli/releases/download/v${upctl_version}/upcloud-cli_${upctl_version}_linux_x86_64.tar.gz
 tar -C /usr/local/bin -xf upcloud-cli.tar.gz
-#upctl completion bash > /etc/bash_completion.d/upctl
+wget https://github.com/centminmod/upcloud-terraform/raw/master/upctl/bash_completion.d/upctl -O /etc/bash_completion.d/upctl
+source /etc/bash_completion.d/upctl
 ```
 
 # Setup Upcloud API Credentials
