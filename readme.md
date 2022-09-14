@@ -449,19 +449,19 @@ resource "upcloud_server" "server1" {
 
 ## Defining Output Variables
 
-and create an `output.tf` file with your hostname `terraform.example.com`
+and create an `output.tf` file with your server name defined in `server1.tf` = `server1` as defined by `resource "upcloud_server" "server1" {`
 
 ```
 output "public_ip" {
-  value = upcloud_server.terraform.example.com.network_interface[0].ip_address
+  value = upcloud_server.server1.network_interface[0].ip_address
 }
 
 output "utility_ip" {
-  value = upcloud_server.terraform.example.com.network_interface[1].ip_address
+  value = upcloud_server.server1.network_interface[1].ip_address
 }
 
 output "hostname" {
-  value = upcloud_server.terraform.example.com.hostname
+  value = upcloud_server.server1.hostname
 }
 ```
 
