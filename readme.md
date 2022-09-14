@@ -172,8 +172,11 @@ resource "upcloud_server" "server1" {
     ]
   }
 
-  user_data = <<EOF
+  user_data = <<-EOF
   export TERM=xterm-256color
+  touch $HOME/.rnd
+  export RANDFILE=$HOME/.rnd
+  chmod 600
   yum -y update
   curl -sL https://github.com/centminmod/scriptreplay/raw/master/script-record.sh -o /usr/local/bin/script-record
   chmod +x /usr/local/bin/script-record
@@ -198,6 +201,9 @@ Terraform will perform the following actions:
       + plan      = "4xCPU-8GB"
       + user_data = <<-EOT
               export TERM=xterm-256color
+              touch $HOME/.rnd
+              export RANDFILE=$HOME/.rnd
+              chmod 600
               yum -y update
               curl -sL https://github.com/centminmod/scriptreplay/raw/master/script-record.sh -o /usr/local/bin/script-record
               chmod +x /usr/local/bin/script-record          
@@ -438,8 +444,11 @@ resource "upcloud_server" "server1" {
     ]
   }
 
-  user_data = <<EOF
+  user_data = <<-EOF
   export TERM=xterm-256color
+  touch $HOME/.rnd
+  export RANDFILE=$HOME/.rnd
+  chmod 600
   yum -y update
   curl -sL https://github.com/centminmod/scriptreplay/raw/master/script-record.sh -o /usr/local/bin/script-record
   chmod +x /usr/local/bin/script-record
