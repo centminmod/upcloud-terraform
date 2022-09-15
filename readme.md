@@ -597,6 +597,16 @@ resource "upcloud_server" "server1" {
 }
 ```
 
+You can optionally enable backups by adding to `template{}` block
+
+```
+  backup_rule {
+    interval  = "daily"
+    time      = "0100"
+    retention = 8
+  }
+```
+
 ## Defining Output Variables
 
 Create an `output.tf` file with your server name defined in `server1.tf` = `server1` as defined by `resource "upcloud_server" "server1" {`
