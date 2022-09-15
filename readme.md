@@ -1,6 +1,6 @@
 # Upcloud Terraform Based Server Installation
 
-Terraform based server install at Upcloud using guide outlined at https://upcloud.com/resources/tutorials/get-started-terraform & https://www.terraform.io/downloads
+Terraform based server install at Upcloud using guide outlined at https://upcloud.com/resources/tutorials/get-started-terraform & https://www.terraform.io/downloads. If you like this guide and want to try out Upcloud, use my referral link [here](https://centminmod.com/upcloud/).
 
 * [Install Terraform](#install-terraform)
 * [Setup Upcloud API Credentials](#setup-upcloud-api-credentials)
