@@ -122,6 +122,7 @@ Using:
   * for AlmaLinux 8 UUID = `01000000-0000-4000-8000-000140010100` with size = `160GB`
   * for Rocky Linux 8 UUID = `01000000-0000-4000-8000-000150010100` with size = `160GB`
 * save your desired SSH public key into `~/.ssh/rsa_public_key` and corresponding SSH private key into `~/.ssh/rsa_private_key`
+* The user data scripted section is configured the way it is as in that environment the `$HOME` variable for root user ends up as `/` while in a normal SSH terminal session `$HOME` is `/root`. This difference seems to break any scripting which relies of `$HOME` variables. The `RANDFILE` is for `openssl` binary operations to work properly if you use scripts which run `openssl` binary.
 
 ```
 resource "upcloud_server" "server1" {
