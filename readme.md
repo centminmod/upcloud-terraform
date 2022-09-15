@@ -124,6 +124,7 @@ Using:
   * for Rocky Linux 8 UUID = `01000000-0000-4000-8000-000150010100` with size = `160GB`
 * save your desired SSH public key into `~/.ssh/rsa_public_key` and corresponding SSH private key into `~/.ssh/rsa_private_key`
 * The user data scripted section is configured the way it is as in that environment the `$HOME` variable for root user ends up as `/` while in a normal SSH terminal session `$HOME` is `/root`. This difference seems to break any scripting which relies of `$HOME` variables. The `RANDFILE` is for `openssl` binary operations to work properly if you use scripts which run `openssl` binary.
+* Change the default `remote-exec` script path from running at `/tmp` in case server has noexec set on `/tmp`. So set in `connection` block `script_path = "/home/tftmp/terraform_%RAND%.sh"`(https://www.terraform.io/language/resources/provisioners/connection)
 
 ```
 resource "upcloud_server" "server1" {
@@ -170,6 +171,7 @@ resource "upcloud_server" "server1" {
     type        = "ssh"
     user        = "root"
     private_key = file("~/.ssh/rsa_private_key")
+    script_path = "/home/tftmp/terraform_%RAND%.sh"
   }
 
   # Remotely executing a command on the server
@@ -181,6 +183,8 @@ resource "upcloud_server" "server1" {
 
   user_data = <<-EOF
   export TERM=xterm-256color
+  mkdir -p /home/tftmp
+  chmod 1777 /home/tftmp
   mkdir -p /root
   export HOME=/root
   echo $HOME
@@ -189,9 +193,21 @@ resource "upcloud_server" "server1" {
   chmod 600 $HOME/.rnd
   env
   yum -y update
-  curl -sL https://github.com/centminmod/scriptreplay/raw/master/script-record.sh -o /usr/local/bin/script-record
-  chmod +x /usr/local/bin/script-record
   EOF
+
+ # Remotely executing a command on the server
+  provisioner "remote-exec" {
+    inline = [
+        "echo",
+        "lscpu",
+        "echo",
+        "free -mlt",
+        "echo",
+        "df -hT",
+        "echo",
+        "cat /etc/redhat-release"
+    ]
+  }
 }
 ```
 
@@ -212,6 +228,8 @@ Terraform will perform the following actions:
       + plan      = "4xCPU-8GB"
       + user_data = <<-EOT
               export TERM=xterm-256color
+              mkdir -p /home/tftmp
+              chmod 1777 /home/tftmp
               mkdir -p /root
               export HOME=/root
               echo $HOME
@@ -220,8 +238,8 @@ Terraform will perform the following actions:
               chmod 600 $HOME/.rnd
               env
               yum -y update
-              curl -sL https://github.com/centminmod/scriptreplay/raw/master/script-record.sh -o /usr/local/bin/script-record
-              chmod +x /usr/local/bin/script-record          
+
+          
         EOT
       + zone      = "us-nyc1"
 
@@ -301,7 +319,48 @@ upcloud_server.server1 (remote-exec):   SSH Agent: true
 upcloud_server.server1 (remote-exec):   Checking Host Key: false
 upcloud_server.server1 (remote-exec):   Target Platform: unix
 upcloud_server.server1 (remote-exec): Connected!
-upcloud_server.server1 (remote-exec): Hello world!
+
+upcloud_server.server1 (remote-exec): Architecture:          x86_64
+upcloud_server.server1 (remote-exec): CPU op-mode(s):        32-bit, 64-bit
+upcloud_server.server1 (remote-exec): Byte Order:            Little Endian
+upcloud_server.server1 (remote-exec): CPU(s):                4
+upcloud_server.server1 (remote-exec): On-line CPU(s) list:   0-3
+upcloud_server.server1 (remote-exec): Thread(s) per core:    1
+upcloud_server.server1 (remote-exec): Core(s) per socket:    1
+upcloud_server.server1 (remote-exec): Socket(s):             4
+upcloud_server.server1 (remote-exec): NUMA node(s):          1
+upcloud_server.server1 (remote-exec): Vendor ID:             AuthenticAMD
+upcloud_server.server1 (remote-exec): CPU family:            23
+upcloud_server.server1 (remote-exec): Model:                 49
+upcloud_server.server1 (remote-exec): Model name:            AMD EPYC 7542 32-Core Processor
+upcloud_server.server1 (remote-exec): Stepping:              0
+upcloud_server.server1 (remote-exec): CPU MHz:               2894.558
+upcloud_server.server1 (remote-exec): BogoMIPS:              5789.11
+upcloud_server.server1 (remote-exec): Hypervisor vendor:     KVM
+upcloud_server.server1 (remote-exec): Virtualization type:   full
+upcloud_server.server1 (remote-exec): L1d cache:             64K
+upcloud_server.server1 (remote-exec): L1i cache:             64K
+upcloud_server.server1 (remote-exec): L2 cache:              512K
+upcloud_server.server1 (remote-exec): L3 cache:              16384K
+upcloud_server.server1 (remote-exec): NUMA node0 CPU(s):     0-3
+upcloud_server.server1 (remote-exec): Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm art rep_good nopl extd_apicid eagerfpu pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw perfctr_core retpoline_amd ssbd ibrs ibpb stibp vmmcall fsgsbase tsc_adjust bmi1 avx2 smep bmi2 rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 clzero xsaveerptr arat umip spec_ctrl intel_stibp arch_capabilities
+
+upcloud_server.server1 (remote-exec):               total        used        free      shared  buff/cache   available
+upcloud_server.server1 (remote-exec): Mem:           7802         339        7030          17         432        7215
+upcloud_server.server1 (remote-exec): Low:           7802         772        7030
+upcloud_server.server1 (remote-exec): High:             0           0           0
+upcloud_server.server1 (remote-exec): Swap:             0           0           0
+upcloud_server.server1 (remote-exec): Total:         7802         339        7030
+
+upcloud_server.server1 (remote-exec): Filesystem     Type      Size  Used Avail Use% Mounted on
+upcloud_server.server1 (remote-exec): devtmpfs       devtmpfs  3.8G     0  3.8G   0% /dev
+upcloud_server.server1 (remote-exec): tmpfs          tmpfs     3.9G     0  3.9G   0% /dev/shm
+upcloud_server.server1 (remote-exec): tmpfs          tmpfs     3.9G   18M  3.8G   1% /run
+upcloud_server.server1 (remote-exec): tmpfs          tmpfs     3.9G     0  3.9G   0% /sys/fs/cgroup
+upcloud_server.server1 (remote-exec): /dev/vda1      xfs       160G  1.6G  159G   1% /
+upcloud_server.server1 (remote-exec): tmpfs          tmpfs     781M     0  781M   0% /run/user/0
+
+upcloud_server.server1 (remote-exec): CentOS Linux release 7.9.2009 (Core)
 upcloud_server.server1: Creation complete after 52s [id=0006f04a-15e3-4f4d-83xxx-7cc592935xxx]
 
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
@@ -488,6 +547,7 @@ resource "upcloud_server" "server1" {
     type        = "ssh"
     user        = var.users[0]
     private_key = file(var.private_key_path)
+    script_path = "/home/tftmp/terraform_%RAND%.sh"
   }
 
   # Remotely executing a command on the server
@@ -499,6 +559,8 @@ resource "upcloud_server" "server1" {
 
   user_data = <<-EOF
   export TERM=xterm-256color
+  mkdir -p /home/tftmp
+  chmod 1777 /home/tftmp
   mkdir -p /root
   export HOME=/root
   echo $HOME
@@ -507,9 +569,21 @@ resource "upcloud_server" "server1" {
   chmod 600 $HOME/.rnd
   env
   yum -y update
-  curl -sL https://github.com/centminmod/scriptreplay/raw/master/script-record.sh -o /usr/local/bin/script-record
-  chmod +x /usr/local/bin/script-record
   EOF
+
+ # Remotely executing a command on the server
+  provisioner "remote-exec" {
+    inline = [
+        "echo",
+        "lscpu",
+        "echo",
+        "free -mlt",
+        "echo",
+        "df -hT",
+        "echo",
+        "cat /etc/redhat-release"
+    ]
+  }
 }
 ```
 
@@ -567,6 +641,8 @@ Terraform will perform the following actions:
       + plan      = "2xCPU-4GB"
       + user_data = <<-EOT
             export TERM=xterm-256color
+            mkdir -p /home/tftmp
+            chmod 1777 /home/tftmp
             mkdir -p /root
             export HOME=/root
             echo $HOME
@@ -575,8 +651,6 @@ Terraform will perform the following actions:
             chmod 600 $HOME/.rnd
             env
             yum -y update
-            curl -sL https://github.com/centminmod/scriptreplay/raw/master/script-record.sh -o /usr/local/bin/script-record
-            chmod +x /usr/local/bin/script-record
         EOT
       + zone      = "us-nyc1"
 
@@ -638,21 +712,6 @@ Note: You didn't use the -out option to save this plan, so Terraform can't guara
 ```
 
 ## Viewing User Data Progress
-
-Check user data installed [script-record script](https://github.com/centminmod/scriptreplay) was setup
-
-```
-script-record
-
-Usage:
-
-/usr/local/bin/script-record rec SESSION_NAME
-/usr/local/bin/script-record play /path/to/cmds.gz /path/to/time.txt.gz
-/usr/local/bin/script-record play /path/to/cmds.gz /path/to/time.txt.gz 2
-/usr/local/bin/script-record play-nogz /path/to/cmds /path/to/time.txt
-/usr/local/bin/script-record play-nogz /path/to/cmds /path/to/time.txt 2
-/usr/local/bin/script-record list
-```
 
 You can check the user data log at `/var/log/upcloud_userdata.log` on the created Upcloud server
 
