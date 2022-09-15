@@ -121,6 +121,7 @@ Using:
   * for CentOS 7 UUID = `01000000-0000-4000-8000-000050010300` with size = `160GB`
   * for AlmaLinux 8 UUID = `01000000-0000-4000-8000-000140010100` with size = `160GB`
   * for Rocky Linux 8 UUID = `01000000-0000-4000-8000-000150010100` with size = `160GB`
+* save your desired SSH public key into `~/.ssh/rsa_public_key` and corresponding SSH private key into `~/.ssh/rsa_private_key`
 
 ```
 resource "upcloud_server" "server1" {
@@ -154,7 +155,7 @@ resource "upcloud_server" "server1" {
   login {
     user = "root"
     keys = [
-      "ssh-rsa XYZABC",
+      file("~/.ssh/rsa_public_key")
     ]
     create_password = false
     password_delivery = "email"
@@ -316,9 +317,9 @@ variable "private_key_path" {
   default = "~/.ssh/rsa_private_key"
 }
 
-variable "public_key" {
+variable "public_key_path" {
   type = string
-  default = "ssh-rsa XYZABC"
+  default = "~/.ssh/rsa_public_key"
 }
 
 variable "zones" {
@@ -434,7 +435,7 @@ resource "upcloud_server" "server1" {
   login {
     user = var.users[0]
     keys = [
-      var.public_key
+      file(var.public_key_path)
     ]
     create_password = var.set_password
     password_delivery = "email"
