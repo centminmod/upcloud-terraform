@@ -312,6 +312,12 @@ Instead of hardcoding `server1.tf` settings, you can use variables outlined at h
 The `variables.tf` file
 
 ```
+variable "hostname" {
+  description = "Server hostname"
+  default     = "terraform.example.com"
+  type        = string
+}
+
 variable "private_key_path" {
   type = string
   default = "~/.ssh/rsa_private_key"
@@ -406,7 +412,7 @@ The `server.tf` file
 ```
 resource "upcloud_server" "server1" {
   # System hostname
-  hostname = "terraform.example.com"
+  hostname = var.hostname
 
   # Availability zone
   zone = var.zones["newyork"]
@@ -503,7 +509,7 @@ output "size" {
 }
 ```
 
-Then creating a `20USD` plan Upcloud server
+Then creating a `20USD` plan Upcloud server. You can also add `-var hostname="host.domain.com"` to change the desired hostname.
 
 ```
 terraform plan -var plan="20USD"
