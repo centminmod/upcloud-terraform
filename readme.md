@@ -408,6 +408,38 @@ variable "template" {
 }
 ```
 
+Speific Terraform definition files
+
+For CentOS 7 `centos.tfvars`
+
+```
+template = "centos7"
+```
+
+For AlmaLinux 8 `almalinux8.tfvars`
+
+```
+template = "almalinux8"
+```
+
+For Rocky Linux 8 `rockylinux8.tfvars`
+
+```
+template = "rockylinux8"
+```
+
+You can then utilise these definition files on the command line i.e.
+
+```
+terraform plan -var plan="20USD" -var hostname="host.domain.com" --var-file centos.tfvars
+terraform plan -var plan="20USD" -var hostname="host.domain.com" --var-file almalinux8.tfvars
+terraform plan -var plan="20USD" -var hostname="host.domain.com" --var-file rockylinux8.tfvars
+
+terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file centos.tfvars
+terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file almalinux8.tfvars
+terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file rockylinux8.tfvars
+```
+
 The `server.tf` file
 
 ```
