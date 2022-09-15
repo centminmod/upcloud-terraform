@@ -104,11 +104,14 @@ drwxr-xr-x 3 root root 4.0K Sep 14 09:07 ..
 
 # Planning Infrastructure With Terraform
 
+
+Using values from https://developers.upcloud.com/1.3/ and https://upcloud.com/resources/tutorials/reduce-downtime-terraform-redeployments. Later you can create variables outlined at https://upcloud.com/resources/tutorials/terraform-variables.
+
+Create `server1.tf`
+
 ```
 touch server1.tf
 ```
-
-Using values from https://developers.upcloud.com/1.3/ and https://upcloud.com/resources/tutorials/reduce-downtime-terraform-redeployments. Later you can create variables outlined at https://upcloud.com/resources/tutorials/terraform-variables.
 
 Using:
 
@@ -177,7 +180,7 @@ resource "upcloud_server" "server1" {
   export TERM=xterm-256color
   touch $HOME/.rnd
   export RANDFILE=$HOME/.rnd
-  chmod 600
+  chmod 600 $HOME/.rnd
   yum -y update
   curl -sL https://github.com/centminmod/scriptreplay/raw/master/script-record.sh -o /usr/local/bin/script-record
   chmod +x /usr/local/bin/script-record
@@ -204,7 +207,7 @@ Terraform will perform the following actions:
               export TERM=xterm-256color
               touch $HOME/.rnd
               export RANDFILE=$HOME/.rnd
-              chmod 600
+              chmod 600 $HOME/.rnd
               yum -y update
               curl -sL https://github.com/centminmod/scriptreplay/raw/master/script-record.sh -o /usr/local/bin/script-record
               chmod +x /usr/local/bin/script-record          
@@ -449,7 +452,7 @@ resource "upcloud_server" "server1" {
   export TERM=xterm-256color
   touch $HOME/.rnd
   export RANDFILE=$HOME/.rnd
-  chmod 600
+  chmod 600 $HOME/.rnd
   yum -y update
   curl -sL https://github.com/centminmod/scriptreplay/raw/master/script-record.sh -o /usr/local/bin/script-record
   chmod +x /usr/local/bin/script-record
