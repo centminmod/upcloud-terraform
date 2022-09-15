@@ -462,7 +462,7 @@ resource "upcloud_server" "server1" {
 
 ## Defining Output Variables
 
-and create an `output.tf` file with your server name defined in `server1.tf` = `server1` as defined by `resource "upcloud_server" "server1" {`
+Create an `output.tf` file with your server name defined in `server1.tf` = `server1` as defined by `resource "upcloud_server" "server1" {`
 
 ```
 output "public_ip" {
@@ -476,6 +476,108 @@ output "utility_ip" {
 output "hostname" {
   value = upcloud_server.server1.hostname
 }
+
+output "plan" {
+  value = upcloud_server.server1.plan
+}
+
+output "zone" {
+  value = upcloud_server.server1.zone
+}
+
+output "size" {
+  value = upcloud_server.server1.template[0].size
+}
+```
+
+Then creating a `20USD` plan Upcloud server
+
+```
+terraform plan -var plan="20USD"
+terraform apply -var plan="20USD"
+```
+
+```
+terraform plan -var plan="20USD"
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # upcloud_server.server1 will be created
+  + resource "upcloud_server" "server1" {
+      + cpu       = (known after apply)
+      + hostname  = "terraform.example.com"
+      + id        = (known after apply)
+      + mem       = (known after apply)
+      + plan      = "2xCPU-4GB"
+      + user_data = <<-EOT
+            export TERM=xterm-256color
+            touch $HOME/.rnd
+            export RANDFILE=$HOME/.rnd
+            chmod 600 $HOME/.rnd
+            yum -y update
+            curl -sL https://github.com/centminmod/scriptreplay/raw/master/script-record.sh -o /usr/local/bin/script-record
+            chmod +x /usr/local/bin/script-record
+        EOT
+      + zone      = "us-nyc1"
+
+      + login {
+          + create_password   = false
+          + keys              = [
+              + "ssh-rsa XYZABC",
+            ]
+          + password_delivery = "email"
+          + user              = "root"
+        }
+
+      + network_interface {
+          + bootable            = false
+          + ip_address          = (known after apply)
+          + ip_address_family   = "IPv4"
+          + ip_address_floating = (known after apply)
+          + mac_address         = (known after apply)
+          + network             = (known after apply)
+          + source_ip_filtering = true
+          + type                = "public"
+        }
+      + network_interface {
+          + bootable            = false
+          + ip_address          = (known after apply)
+          + ip_address_family   = "IPv4"
+          + ip_address_floating = (known after apply)
+          + mac_address         = (known after apply)
+          + network             = (known after apply)
+          + source_ip_filtering = true
+          + type                = "utility"
+        }
+
+      + template {
+          + address                  = (known after apply)
+          + delete_autoresize_backup = false
+          + filesystem_autoresize    = false
+          + id                       = (known after apply)
+          + size                     = 80
+          + storage                  = "01000000-0000-4000-8000-000050010300"
+          + tier                     = (known after apply)
+          + title                    = (known after apply)
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + hostname   = "terraform.example.com"
+  + plan       = "2xCPU-4GB"
+  + public_ip  = (known after apply)
+  + size       = 80
+  + utility_ip = (known after apply)
+  + zone       = "us-nyc1"
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
 ```
 
 ## Viewing User Data Progress
