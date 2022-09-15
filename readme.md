@@ -178,9 +178,13 @@ resource "upcloud_server" "server1" {
 
   user_data = <<-EOF
   export TERM=xterm-256color
+  mkdir -p /root
+  export HOME=/root
+  echo $HOME
   touch $HOME/.rnd
   export RANDFILE=$HOME/.rnd
   chmod 600 $HOME/.rnd
+  env
   yum -y update
   curl -sL https://github.com/centminmod/scriptreplay/raw/master/script-record.sh -o /usr/local/bin/script-record
   chmod +x /usr/local/bin/script-record
@@ -205,9 +209,13 @@ Terraform will perform the following actions:
       + plan      = "4xCPU-8GB"
       + user_data = <<-EOT
               export TERM=xterm-256color
+              mkdir -p /root
+              export HOME=/root
+              echo $HOME
               touch $HOME/.rnd
               export RANDFILE=$HOME/.rnd
               chmod 600 $HOME/.rnd
+              env
               yum -y update
               curl -sL https://github.com/centminmod/scriptreplay/raw/master/script-record.sh -o /usr/local/bin/script-record
               chmod +x /usr/local/bin/script-record          
@@ -450,9 +458,13 @@ resource "upcloud_server" "server1" {
 
   user_data = <<-EOF
   export TERM=xterm-256color
+  mkdir -p /root
+  export HOME=/root
+  echo $HOME
   touch $HOME/.rnd
   export RANDFILE=$HOME/.rnd
   chmod 600 $HOME/.rnd
+  env
   yum -y update
   curl -sL https://github.com/centminmod/scriptreplay/raw/master/script-record.sh -o /usr/local/bin/script-record
   chmod +x /usr/local/bin/script-record
@@ -514,9 +526,13 @@ Terraform will perform the following actions:
       + plan      = "2xCPU-4GB"
       + user_data = <<-EOT
             export TERM=xterm-256color
+            mkdir -p /root
+            export HOME=/root
+            echo $HOME
             touch $HOME/.rnd
             export RANDFILE=$HOME/.rnd
             chmod 600 $HOME/.rnd
+            env
             yum -y update
             curl -sL https://github.com/centminmod/scriptreplay/raw/master/script-record.sh -o /usr/local/bin/script-record
             chmod +x /usr/local/bin/script-record
@@ -597,7 +613,7 @@ Usage:
 /usr/local/bin/script-record list
 ```
 
-You can check the user date log at `/var/log/upcloud_userdata.log` on the created Upcloud server
+You can check the user data log at `/var/log/upcloud_userdata.log` on the created Upcloud server
 
 ```
 tail -f /var/log/upcloud_userdata.log
