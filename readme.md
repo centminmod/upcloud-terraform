@@ -7,6 +7,7 @@ Terraform based server install at Upcloud using guide outlined at https://upclou
 * [Initialize New Terraform Project](#initialize-new-terraform-project)
 * [Planning Infrastructure With Terraform](#planning-infrastructure-with-terraform)
   * [Variable Template Method](#variable-template-method)
+  * [Specific Terraform definition files](#specific-terraform-definition-files)
   * [Defining Output Variables](#defining-output-variables)
   * [Viewing User Data Progress](#viewing-user-data-progress)
 * [Using upctl Command Line Tool](#using-upctl-command-line-tool)
@@ -408,7 +409,7 @@ variable "template" {
 }
 ```
 
-Speific Terraform definition files
+# Specific Terraform definition files
 
 For CentOS 7 `centos.tfvars`
 
