@@ -1,6 +1,6 @@
 resource "upcloud_server" "server1" {
   # System hostname
-  hostname = "terraform.example.com"
+  hostname = var.hostname
 
   # Availability zone
   zone = var.zones["newyork"]
@@ -42,6 +42,7 @@ resource "upcloud_server" "server1" {
     type        = "ssh"
     user        = var.users[0]
     private_key = file(var.private_key_path)
+    script_path = "/home/tftmp/terraform_%RAND%.sh"
   }
 
   # Remotely executing a command on the server
@@ -53,6 +54,9 @@ resource "upcloud_server" "server1" {
 
   user_data = <<-EOF
   export TERM=xterm-256color
+  mkdir -p /home/tftmp
+  sleep 5
+  chmod 1777 /home/tftmp
   mkdir -p /root
   export HOME=/root
   echo $HOME
@@ -61,7 +65,21 @@ resource "upcloud_server" "server1" {
   chmod 600 $HOME/.rnd
   env
   yum -y update
-  curl -sL https://github.com/centminmod/scriptreplay/raw/master/script-record.sh -o /usr/local/bin/script-record
-  chmod +x /usr/local/bin/script-record
   EOF
+ # Remotely executing a command on the server
+  provisioner "remote-exec" {
+    inline = [
+      "echo",
+      "lscpu",
+      "echo",
+      "free -mlt",
+      "echo",
+      "df -hT",
+      "echo",
+      "cat /etc/redhat-release",
+      "echo",
+      "sleep 5",
+      "echo"
+    ]
+  }
 }

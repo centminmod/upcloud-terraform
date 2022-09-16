@@ -184,6 +184,7 @@ resource "upcloud_server" "server1" {
   user_data = <<-EOF
   export TERM=xterm-256color
   mkdir -p /home/tftmp
+  sleep 5
   chmod 1777 /home/tftmp
   mkdir -p /root
   export HOME=/root
@@ -239,6 +240,7 @@ Terraform will perform the following actions:
       + user_data = <<-EOT
               export TERM=xterm-256color
               mkdir -p /home/tftmp
+              sleep 5
               chmod 1777 /home/tftmp
               mkdir -p /root
               export HOME=/root
@@ -510,6 +512,14 @@ terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file alm
 terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file rockylinux8.tfvars
 ```
 
+To apply without prompt at `-auto-approve`
+
+```
+terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file centos.tfvars -auto-approve
+terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file almalinux8.tfvars -auto-approve
+terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file rockylinux8.tfvars -auto-approve
+```
+
 The `server.tf` file
 
 ```
@@ -570,6 +580,7 @@ resource "upcloud_server" "server1" {
   user_data = <<-EOF
   export TERM=xterm-256color
   mkdir -p /home/tftmp
+  sleep 5
   chmod 1777 /home/tftmp
   mkdir -p /root
   export HOME=/root
@@ -644,6 +655,12 @@ terraform plan -var plan="20USD"
 terraform apply -var plan="20USD"
 ```
 
+To apply without prompt at `-auto-approve`
+
+```
+terraform apply -var plan="20USD" -auto-approve
+```
+
 ```
 terraform plan -var plan="20USD"
 
@@ -662,6 +679,7 @@ Terraform will perform the following actions:
       + user_data = <<-EOT
             export TERM=xterm-256color
             mkdir -p /home/tftmp
+            sleep 5
             chmod 1777 /home/tftmp
             mkdir -p /root
             export HOME=/root
