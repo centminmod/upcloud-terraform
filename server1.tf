@@ -66,6 +66,7 @@ resource "upcloud_server" "server1" {
   env
   yum -y update
   EOF
+
  # Remotely executing a command on the server
   provisioner "remote-exec" {
     inline = [
