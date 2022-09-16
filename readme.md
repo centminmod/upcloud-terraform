@@ -535,6 +535,11 @@ terraform show "plan20usd-c7"
 terraform show "plan20usd-al8"
 terraform show "plan20usd-rl8"
 
+# inspect plan files with debug output prefix with TF_LOG=debug
+TF_LOG=debug terraform show "plan20usd-c7"
+TF_LOG=debug terraform show "plan20usd-al8"
+TF_LOG=debug terraform show "plan20usd-rl8"
+
 # inspect plan files in json output
 terraform show -json "plan20usd-c7"
 terraform show -json "plan20usd-al8"
@@ -544,6 +549,11 @@ terraform show -json "plan20usd-rl8"
 terraform apply "plan20usd-c7"
 terraform apply "plan20usd-al8"
 terraform apply "plan20usd-rl8"
+
+# apply plan files with debug output prefix with TF_LOG=debug
+TF_LOG=debug terraform apply "plan20usd-c7"
+TF_LOG=debug terraform apply "plan20usd-al8"
+TF_LOG=debug terraform apply "plan20usd-rl8"
 ```
 
 The `server.tf` file
