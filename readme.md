@@ -520,6 +520,32 @@ terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file alm
 terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file rockylinux8.tfvars -auto-approve
 ```
 
+## plan files
+
+Or save to plan files
+
+```
+# save plan files
+terraform plan -var plan="20USD" -var hostname="host.domain.com" --var-file centos.tfvars -out plan20usd-c7
+terraform plan -var plan="20USD" -var hostname="host.domain.com" --var-file almalinux8.tfvars -out plan20usd-al8
+terraform plan -var plan="20USD" -var hostname="host.domain.com" --var-file rockylinux8.tfvars -out plan20usd-rl8
+
+# inspect plan files
+terraform show "plan20usd-c7"
+terraform show "plan20usd-al8"
+terraform show "plan20usd-rl8"
+
+# inspect plan files in json output
+terraform show -json "plan20usd-c7"
+terraform show -json "plan20usd-al8"
+terraform show -json "plan20usd-rl8"
+
+# apply plan files
+terraform apply "plan20usd-c7"
+terraform apply "plan20usd-al8"
+terraform apply "plan20usd-rl8"
+```
+
 The `server.tf` file
 
 ```
