@@ -171,7 +171,7 @@ resource "upcloud_server" "server1" {
     type        = "ssh"
     user        = "root"
     private_key = file("~/.ssh/rsa_private_key")
-    script_path = "/home/tftmp/terraform_%RAND%.sh"
+    script_path = "/home/terraform_%RAND%.sh"
   }
 
   # Remotely executing a command on the server
@@ -183,9 +183,6 @@ resource "upcloud_server" "server1" {
 
   user_data = <<-EOF
   export TERM=xterm-256color
-  mkdir -p /home/tftmp
-  sleep 5
-  chmod 1777 /home/tftmp
   mkdir -p /root
   export HOME=/root
   echo $HOME
@@ -603,7 +600,7 @@ resource "upcloud_server" "server1" {
     type        = "ssh"
     user        = var.users[0]
     private_key = file(var.private_key_path)
-    script_path = "/home/tftmp/terraform_%RAND%.sh"
+    script_path = "/home/terraform_%RAND%.sh"
   }
 
   # Remotely executing a command on the server
@@ -615,9 +612,6 @@ resource "upcloud_server" "server1" {
 
   user_data = <<-EOF
   export TERM=xterm-256color
-  mkdir -p /home/tftmp
-  sleep 5
-  chmod 1777 /home/tftmp
   mkdir -p /root
   export HOME=/root
   echo $HOME
