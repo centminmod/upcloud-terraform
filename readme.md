@@ -396,6 +396,7 @@ variable "private_key_path" {
 variable "public_key_path" {
   type = string
   default = "~/.ssh/rsa_public_key"
+  sensitive = true
 }
 
 variable "zones" {
@@ -587,7 +588,7 @@ resource "upcloud_server" "server1" {
   login {
     user = var.users[0]
     keys = [
-      file(var.public_key_path)
+      chomp(file(var.public_key_path))
     ]
     create_password = var.set_password
     password_delivery = "email"
