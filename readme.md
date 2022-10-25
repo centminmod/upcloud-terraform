@@ -1306,6 +1306,16 @@ terraform destroy
       {
         "access": "public",
         "license": 0,
+        "size": 4,
+        "state": "online",
+        "template_type": "cloud-init",
+        "title": "Ubuntu Server 22.04 LTS (Jammy Jellyfish)",
+        "type": "template",
+        "uuid": "01000000-0000-4000-8000-000030220200"
+      },
+      {
+        "access": "public",
+        "license": 0,
         "size": 3,
         "state": "online",
         "template_type": "native",
@@ -1366,12 +1376,42 @@ terraform destroy
       {
         "access": "public",
         "license": 0,
+        "size": 4,
+        "state": "online",
+        "template_type": "cloud-init",
+        "title": "AlmaLinux 9",
+        "type": "template",
+        "uuid": "01000000-0000-4000-8000-000140020100"
+      },
+      {
+        "access": "public",
+        "license": 0,
         "size": 3,
         "state": "online",
         "template_type": "native",
         "title": "Rocky Linux 8",
         "type": "template",
         "uuid": "01000000-0000-4000-8000-000150010100"
+      },
+      {
+        "access": "public",
+        "license": 0,
+        "size": 4,
+        "state": "online",
+        "template_type": "cloud-init",
+        "title": "Rocky Linux 9",
+        "type": "template",
+        "uuid": "01000000-0000-4000-8000-000150020100"
+      },
+      {
+        "access": "public",
+        "license": 0,
+        "size": 5,
+        "state": "online",
+        "template_type": "cloud-init",
+        "title": "UpCloud K8s",
+        "type": "template",
+        "uuid": "01000000-0000-4000-8000-000160010100"
       }
     ]
   }
