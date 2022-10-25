@@ -942,18 +942,18 @@ terraform destroy
     "plan": [
       {
         "core_number": 1,
-        "memory_amount": 1024,
-        "name": "1xCPU-1GB",
-        "public_traffic_out": 1024,
-        "storage_size": 25,
-        "storage_tier": "maxiops"
-      },
-      {
-        "core_number": 1,
         "memory_amount": 2048,
         "name": "1xCPU-2GB",
         "public_traffic_out": 2048,
         "storage_size": 50,
+        "storage_tier": "maxiops"
+      },
+      {
+        "core_number": 1,
+        "memory_amount": 1024,
+        "name": "1xCPU-1GB",
+        "public_traffic_out": 1024,
+        "storage_size": 25,
         "storage_tier": "maxiops"
       },
       {
@@ -962,6 +962,38 @@ terraform destroy
         "name": "2xCPU-4GB",
         "public_traffic_out": 4096,
         "storage_size": 80,
+        "storage_tier": "maxiops"
+      },
+      {
+        "core_number": 2,
+        "memory_amount": 8192,
+        "name": "HIMEM-2xCPU-8GB",
+        "public_traffic_out": 2048,
+        "storage_size": 100,
+        "storage_tier": "maxiops"
+      },
+      {
+        "core_number": 2,
+        "memory_amount": 16384,
+        "name": "HIMEM-2xCPU-16GB",
+        "public_traffic_out": 2048,
+        "storage_size": 100,
+        "storage_tier": "maxiops"
+      },
+      {
+        "core_number": 4,
+        "memory_amount": 65536,
+        "name": "HIMEM-4xCPU-64GB",
+        "public_traffic_out": 4096,
+        "storage_size": 200,
+        "storage_tier": "maxiops"
+      },
+      {
+        "core_number": 4,
+        "memory_amount": 32768,
+        "name": "HIMEM-4xCPU-32GB",
+        "public_traffic_out": 4096,
+        "storage_size": 100,
         "storage_tier": "maxiops"
       },
       {
@@ -981,6 +1013,38 @@ terraform destroy
         "storage_tier": "maxiops"
       },
       {
+        "core_number": 6,
+        "memory_amount": 131072,
+        "name": "HIMEM-6xCPU-128GB",
+        "public_traffic_out": 6144,
+        "storage_size": 300,
+        "storage_tier": "maxiops"
+      },
+      {
+        "core_number": 8,
+        "memory_amount": 12288,
+        "name": "HICPU-8xCPU-12GB",
+        "public_traffic_out": 4096,
+        "storage_size": 100,
+        "storage_tier": "maxiops"
+      },
+      {
+        "core_number": 8,
+        "memory_amount": 16384,
+        "name": "HICPU-8xCPU-16GB",
+        "public_traffic_out": 4096,
+        "storage_size": 200,
+        "storage_tier": "maxiops"
+      },
+      {
+        "core_number": 8,
+        "memory_amount": 196608,
+        "name": "HIMEM-8xCPU-192GB",
+        "public_traffic_out": 8192,
+        "storage_size": 400,
+        "storage_tier": "maxiops"
+      },
+      {
         "core_number": 8,
         "memory_amount": 32768,
         "name": "8xCPU-32GB",
@@ -990,10 +1054,42 @@ terraform destroy
       },
       {
         "core_number": 12,
+        "memory_amount": 262144,
+        "name": "HIMEM-12xCPU-256GB",
+        "public_traffic_out": 10240,
+        "storage_size": 500,
+        "storage_tier": "maxiops"
+      },
+      {
+        "core_number": 12,
         "memory_amount": 49152,
         "name": "12xCPU-48GB",
         "public_traffic_out": 9216,
         "storage_size": 960,
+        "storage_tier": "maxiops"
+      },
+      {
+        "core_number": 16,
+        "memory_amount": 24576,
+        "name": "HICPU-16xCPU-24GB",
+        "public_traffic_out": 5120,
+        "storage_size": 100,
+        "storage_tier": "maxiops"
+      },
+      {
+        "core_number": 16,
+        "memory_amount": 393216,
+        "name": "HIMEM-16xCPU-384GB",
+        "public_traffic_out": 12288,
+        "storage_size": 600,
+        "storage_tier": "maxiops"
+      },
+      {
+        "core_number": 16,
+        "memory_amount": 32768,
+        "name": "HICPU-16xCPU-32GB",
+        "public_traffic_out": 5120,
+        "storage_size": 200,
         "storage_tier": "maxiops"
       },
       {
@@ -1018,6 +1114,38 @@ terraform destroy
         "name": "20xCPU-96GB",
         "public_traffic_out": 12288,
         "storage_size": 1920,
+        "storage_tier": "maxiops"
+      },
+      {
+        "core_number": 32,
+        "memory_amount": 49152,
+        "name": "HICPU-32xCPU-48GB",
+        "public_traffic_out": 6144,
+        "storage_size": 200,
+        "storage_tier": "maxiops"
+      },
+      {
+        "core_number": 32,
+        "memory_amount": 65536,
+        "name": "HICPU-32xCPU-64GB",
+        "public_traffic_out": 6144,
+        "storage_size": 300,
+        "storage_tier": "maxiops"
+      },
+      {
+        "core_number": 64,
+        "memory_amount": 131072,
+        "name": "HICPU-64xCPU-128GB",
+        "public_traffic_out": 7168,
+        "storage_size": 300,
+        "storage_tier": "maxiops"
+      },
+      {
+        "core_number": 64,
+        "memory_amount": 98304,
+        "name": "HICPU-64xCPU-96GB",
+        "public_traffic_out": 7168,
+        "storage_size": 200,
         "storage_tier": "maxiops"
       }
     ]
