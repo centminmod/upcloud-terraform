@@ -537,16 +537,32 @@ For Rocky Linux 8 `rockylinux8.tfvars`
 template = "rockylinux8"
 ```
 
+For AlmaLinux 9 `almalinux9.tfvars`
+
+```
+template = "almalinux9"
+```
+
+For Rocky Linux 9 `rockylinux9.tfvars`
+
+```
+template = "rockylinux9"
+```
+
 You can then utilise these definition files on the command line i.e.
 
 ```
 terraform plan -var plan="20USD" -var hostname="host.domain.com" --var-file centos.tfvars
 terraform plan -var plan="20USD" -var hostname="host.domain.com" --var-file almalinux8.tfvars
 terraform plan -var plan="20USD" -var hostname="host.domain.com" --var-file rockylinux8.tfvars
+terraform plan -var plan="20USD" -var hostname="host.domain.com" --var-file almalinux9.tfvars
+terraform plan -var plan="20USD" -var hostname="host.domain.com" --var-file rockylinux9.tfvars
 
 terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file centos.tfvars
 terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file almalinux8.tfvars
 terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file rockylinux8.tfvars
+terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file almalinux9.tfvars
+terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file rockylinux9.tfvars
 ```
 
 To apply without prompt at `-auto-approve`
@@ -555,6 +571,8 @@ To apply without prompt at `-auto-approve`
 terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file centos.tfvars -auto-approve
 terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file almalinux8.tfvars -auto-approve
 terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file rockylinux8.tfvars -auto-approve
+terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file almalinux9.tfvars -auto-approve
+terraform apply -var plan="20USD" -var hostname="host.domain.com" --var-file rockylinux9.tfvars -auto-approve
 ```
 
 ## plan files
@@ -566,31 +584,43 @@ Or save to plan files
 terraform plan -var plan="20USD" -var hostname="host.domain.com" --var-file centos.tfvars -out plan20usd-c7
 terraform plan -var plan="20USD" -var hostname="host.domain.com" --var-file almalinux8.tfvars -out plan20usd-al8
 terraform plan -var plan="20USD" -var hostname="host.domain.com" --var-file rockylinux8.tfvars -out plan20usd-rl8
+terraform plan -var plan="20USD" -var hostname="host.domain.com" --var-file almalinux9.tfvars -out plan20usd-al9
+terraform plan -var plan="20USD" -var hostname="host.domain.com" --var-file rockylinux9.tfvars -out plan20usd-rl9
 
 # inspect plan files
 terraform show "plan20usd-c7"
 terraform show "plan20usd-al8"
 terraform show "plan20usd-rl8"
+terraform show "plan20usd-al9"
+terraform show "plan20usd-rl9"
 
 # inspect plan files with debug output prefix with TF_LOG=debug
 TF_LOG=debug terraform show "plan20usd-c7"
 TF_LOG=debug terraform show "plan20usd-al8"
 TF_LOG=debug terraform show "plan20usd-rl8"
+TF_LOG=debug terraform show "plan20usd-al9"
+TF_LOG=debug terraform show "plan20usd-rl9"
 
 # inspect plan files in json output
 terraform show -json "plan20usd-c7"
 terraform show -json "plan20usd-al8"
 terraform show -json "plan20usd-rl8"
+terraform show -json "plan20usd-al9"
+terraform show -json "plan20usd-rl9"
 
 # apply plan files
 terraform apply "plan20usd-c7"
 terraform apply "plan20usd-al8"
 terraform apply "plan20usd-rl8"
+terraform apply "plan20usd-al9"
+terraform apply "plan20usd-rl9"
 
 # apply plan files with debug output prefix with TF_LOG=debug
 TF_LOG=debug terraform apply "plan20usd-c7"
 TF_LOG=debug terraform apply "plan20usd-al8"
 TF_LOG=debug terraform apply "plan20usd-rl8"
+TF_LOG=debug terraform apply "plan20usd-al9"
+TF_LOG=debug terraform apply "plan20usd-rl9"
 ```
 
 The `server.tf` file
