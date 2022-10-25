@@ -122,6 +122,9 @@ Using:
   * for CentOS 7 UUID = `01000000-0000-4000-8000-000050010300` with size = `160GB`
   * for AlmaLinux 8 UUID = `01000000-0000-4000-8000-000140010100` with size = `160GB`
   * for Rocky Linux 8 UUID = `01000000-0000-4000-8000-000150010100` with size = `160GB`
+  * for AlmaLinux 9 UUID = `01000000-0000-4000-8000-000140020100` with size = `160GB`
+  * for Rocky Linux 9 UUID = `01000000-0000-4000-8000-000150020100` with size = `160GB`
+
 * save your desired SSH public key into `~/.ssh/rsa_public_key` and corresponding SSH private key into `~/.ssh/rsa_private_key`
 * The user data scripted section is configured the way it is as in that environment the `$HOME` variable for root user ends up as `/` while in a normal SSH terminal session `$HOME` is `/root`. This difference seems to break any scripting which relies of `$HOME` variables. The `RANDFILE` is for `openssl` binary operations to work properly if you use scripts which run `openssl` binary.
 * Change the default `remote-exec` script path from running at `/tmp` in case server has noexec set on `/tmp`. So set in `connection` block `script_path = "/home/tftmp/terraform_%RAND%.sh"`(https://www.terraform.io/language/resources/provisioners/connection)
