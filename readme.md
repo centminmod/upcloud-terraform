@@ -12,6 +12,7 @@ Terraform based server install at Upcloud using guide outlined at https://upclou
   * [Viewing User Data Progress](#viewing-user-data-progress)
 * [Using upctl Command Line Tool](#using-upctl-command-line-tool)
 * [Deleting Terraform Created Server](#deleting-terraform-created-server)
+* [Upcloud Region List](#upcloud-region-list)
 * [Upcloud Plan List](#upcloud-plan-list)
 * [OS Template Storage UUID](#os-template-storage-uuid)
 
@@ -993,7 +994,7 @@ upctl server show terraform.example.com
 terraform destroy
 ```
 
-# Region List
+# Upcloud Region List
 
 ```json
 {
