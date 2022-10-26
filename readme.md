@@ -517,6 +517,37 @@ variable "template" {
 }
 ```
 
+Which allows you to specify a plan by the pre-defined plan name which in this case is as follows:
+
+```
+    "5USD"     = "1xCPU-1GB"
+    "10USD"    = "1xCPU-2GB"
+    "20USD"    = "2xCPU-4GB"
+    "40USD"    = "4xCPU-8GB"
+    "80USD"    = "6xCPU-16GB"
+    "160USD"   = "8xCPU-32GB"
+    "240USD"   = "12xCPU-48GB"
+    "320USD"   = "16xCPU-64GB"
+    "490USD"   = "20xCPU-96GB"
+    "640USD"   = "20xCPU-128GB"
+    "40USDM"   = "HIMEM-2xCPU-8GB"
+    "65USDM"   = "HIMEM-2xCPU-16GB"
+    "132USDM"  = "HIMEM-4xCPU-32GB"
+    "240USDM"  = "HIMEM-4xCPU-64GB"
+    "480USDM"  = "HIMEM-6xCPU-128GB"
+    "840USDM"  = "HIMEM-8xCPU-192GB"
+    "1080USDM" = "HIMEM-12xCPU-256GB"
+    "1680USDM" = "HIMEM-16xCPU-384GB"
+    "130USDC"  = "HICPU-8xCPU-12GB"
+    "160USDC"  = "HICPU-8xCPU-16GB"
+    "260USDC"  = "HICPU-16xCPU-24GB"
+    "310USDC"  = "HICPU-16xCPU-32GB"
+    "530USDC"  = "HICPU-32xCPU-48GB"
+    "620USDC"  = "HICPU-32xCPU-64GB"
+    "1056USDC" = "HICPU-64xCPU-96GB"
+    "1248USDC" = "HICPU-64xCPU-128GB"
+```
+
 # Specific Terraform definition files
 
 For CentOS 7 `centos.tfvars`
@@ -549,7 +580,7 @@ For Rocky Linux 9 `rockylinux9.tfvars`
 template = "rockylinux9"
 ```
 
-You can then utilise these definition files on the command line i.e.
+You can then utilise these definition files on the command line and set the pre-defined plan name from above and desired hostname and `--var-file` for the OS template name i.e.
 
 ```
 terraform plan -var plan="20USD" -var hostname="host.domain.com" --var-file centos.tfvars
