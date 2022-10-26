@@ -129,7 +129,9 @@ Using:
 * The user data scripted section is configured the way it is as in that environment the `$HOME` variable for root user ends up as `/` while in a normal SSH terminal session `$HOME` is `/root`. This difference seems to break any scripting which relies of `$HOME` variables. The `RANDFILE` is for `openssl` binary operations to work properly if you use scripts which run `openssl` binary.
 * Change the default `remote-exec` script path from running at `/tmp` in case server has noexec set on `/tmp`. So set in `connection` block `script_path = "/home/tftmp/terraform_%RAND%.sh"`(https://www.terraform.io/language/resources/provisioners/connection)
 
-**Note:** looks like for AlmaLinux 9 and Rocky Linux 9, they are using `cloud-init` templates and need to have enabled otherwise, you'd get an error like:
+**Notes:** 
+
+1. looks like for AlmaLinux 9 and Rocky Linux 9, they are using `cloud-init` templates and need to have enabled otherwise, you'd get an error like:
 
 ```
 ╷
@@ -140,6 +142,13 @@ Using:
 │    1: resource "upcloud_server" "server1" {
 │ 
 ╵
+```
+
+2. EL9 OSes have SELinux enabled by default and you'd want to disable that before installing Centmin Mod. Centmin Mod can't automatically disable SELinux in EL9 like it can in EL7/EL8 OSes. 
+
+```
+grep '^SELINUX=' /etc/selinux/config
+SELINUX=enforcing
 ```
 
 Contents of `server1.tf`
