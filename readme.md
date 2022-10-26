@@ -131,7 +131,7 @@ Using:
 
 **Notes:** 
 
-1. looks like for AlmaLinux 9 and Rocky Linux 9, they are using `cloud-init` templates and need to have enabled otherwise, you'd get an error like:
+1. looks like for AlmaLinux 9 and Rocky Linux 9, they are using `cloud-init` templates and need to have Upcloud's Metadata enabled otherwise, you'd get an error like:
 
 ```
 ╷
