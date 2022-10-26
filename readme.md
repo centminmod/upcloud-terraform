@@ -129,6 +129,21 @@ Using:
 * The user data scripted section is configured the way it is as in that environment the `$HOME` variable for root user ends up as `/` while in a normal SSH terminal session `$HOME` is `/root`. This difference seems to break any scripting which relies of `$HOME` variables. The `RANDFILE` is for `openssl` binary operations to work properly if you use scripts which run `openssl` binary.
 * Change the default `remote-exec` script path from running at `/tmp` in case server has noexec set on `/tmp`. So set in `connection` block `script_path = "/home/tftmp/terraform_%RAND%.sh"`(https://www.terraform.io/language/resources/provisioners/connection)
 
+**Note:** looks like for AlmaLinux 9 and Rocky Linux 9, they are using `cloud-init` templates and need to have enabled otherwise, you'd get an error like:
+
+```
+╷
+│ Error: Metadata must be enabled when cloning a cloud-init template (METADATA_DISABLED_ON_CLOUD-INIT)
+│ 
+│   with upcloud_server.server1,
+│   on server1.tf line 1, in resource "upcloud_server" "server1":
+│    1: resource "upcloud_server" "server1" {
+│ 
+╵
+```
+
+Contents of `server1.tf`
+
 ```
 resource "upcloud_server" "server1" {
   # System hostname
@@ -139,6 +154,8 @@ resource "upcloud_server" "server1" {
 
   # Number of CPUs and memory in GB
   plan = "4xCPU-8GB"
+
+  metadata = true
 
   template {
     # System storage device size
@@ -666,6 +683,8 @@ resource "upcloud_server" "server1" {
 
   # Number of CPUs and memory in GB
   plan = var.plans[var.plan]
+
+  metadata = true
 
   template {
     # System storage device size

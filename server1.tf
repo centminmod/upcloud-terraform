@@ -8,6 +8,8 @@ resource "upcloud_server" "server1" {
   # Number of CPUs and memory in GB
   plan = var.plans[var.plan]
 
+  metadata = true
+
   template {
     # System storage device size
     size = lookup(var.storage_sizes, var.plans[var.plan])
